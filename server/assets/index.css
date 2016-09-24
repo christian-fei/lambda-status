@@ -4,8 +4,8 @@
   display: none;
 }
 .loading-page-container.loading-page-active #loading-page {
-  background-color: black;
-  color: white;
+  background-color: #fff;
+  color: #333;
   display: block;
   position: fixed;
   top: 0;
@@ -13,4 +13,33 @@
   bottom: 0;
   left: 0;
   z-index: 9999;
+}
+
+
+.counter-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+.counter {
+  display: inline-block;
+  margin: 0 auto;
+  width: 20rem;
+  height: 20rem;
+  border: 1px solid #ccc;
+  color: #333;
+  background-color: #fff;
+  text-align: center;
+  font-size: 1.5em;
+  padding: 0.5em;
+}
+.counter h2 {
+  margin: 0;
+}
+
+
+.giant {
+  font-size: 3em;
+  margin: 0 auto;
 }
