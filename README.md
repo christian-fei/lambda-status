@@ -1,10 +1,14 @@
-Create lambda
+# Installation
+## 1. Create lambda
 ```
 rm claudia.json
 claudia create --region eu-central-1 --handler lambda.handler
 ```
 
-Create an interval to execute the status check.
+## 2. Configure `event.json` according to your configuration.
+
+
+## 3. Create an interval to execute the status check.
 ```
 claudia add-scheduled-event --event event.json --name schedule-status --rate "1 minute"
 ```
