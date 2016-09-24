@@ -1,7 +1,6 @@
 # Installation
 ## 1. Create lambda
 ```
-rm claudia.json
 claudia create --region eu-central-1 --handler lambda.handler
 ```
 
