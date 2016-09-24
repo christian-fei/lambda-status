@@ -15,12 +15,16 @@
       <h1>Loading...</h1>
     </div>
     <div>
-      <canvas id=" loadingTimeChart" width="300" height="80"></canvas>
+      <button class="load-time-period" id="1hago" data-time="1hago">Past hour</button>
+      <button class="load-time-period" id="1dago" data-time="1dago">Past day</button>
+      <button class="load-time-period" id="1wago" data-time="1wago">Past week</button>
+      <canvas id="loading-time-chart" width="300" height="80"></canvas>
       <div class="counter-container">
         <div class="counter" id="datasets"></div>
         <div class="counter" id="from"></div>
         <div class="counter" id="to"></div>
         <div class="counter" id="exception-rate"></div>
+        <div class="counter" id="avg-loading-time"></div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
