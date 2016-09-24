@@ -1,6 +1,8 @@
+var $loadingPageContainer = $('.loading-page-container')
 $.get('/statuses', function(err, status, response){
   console.log(err, status, response)
   drawResponseTimeChartWith(response.responseJSON)
+  $loadingPageContainer.removeClass('loading-page-active')
 })
 
 function drawResponseTimeChartWith(data) {

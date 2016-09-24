@@ -29,6 +29,13 @@ server.route({
 })
 server.route({
   method: 'GET',
+  path:'/assets/index.css',
+  handler: function (request, reply) {
+    return reply.file('./assets/index.css');
+  }
+})
+server.route({
+  method: 'GET',
   path:'/statuses',
   handler: function (request, reply) {
     return StatusRepository.latest()
