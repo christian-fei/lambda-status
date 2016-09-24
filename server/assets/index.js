@@ -34,11 +34,22 @@ function setCounter(type, data) {
     counter.append($('<div><h1># datasets</h1><br><h1 class="giant">'+data.length+'</h1></div>'))
   }
   if('from'==type) {
-    const date = data.reduce((acc, val)=>acc<val.id?acc:new Date(val.id), null)
+    if(data.length===0){
+      counter.hide()
+    } else {
+      counter.show()
+    }
+    const date = data.reduce((acc, val)=>acc<val.id?acc:new Date(val.id), new Date(data[0].id))
+    console.log('-- date', date)
     counter.empty()
     counter.append($('<div><h1>from</h1><br><h2>'+ formatDate(date)+'</h2></div>'))
   }
   if('to'==type) {
+    if(data.length===0){
+      counter.hide()
+    } else {
+      counter.show()
+    }
     const date = data.reduce((acc, val)=>acc>val.id?acc:new Date(val.id), null)
     counter.empty()
     counter.append($('<div><h1>to</h1><br><h2>'+ formatDate(date)+'</h2></div>'))
