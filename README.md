@@ -1,17 +1,21 @@
 # Installation
-## 1. Create lambda
+## 1. Install packages
 ```
-claudia create --region eu-central-1 --handler lambda.handler
-```
-
-## 2. Configure `event.json` according to your configuration.
-
-
-## 3. Create an interval to execute the status check.
-```
-claudia add-scheduled-event --event event.json --name schedule-status --rate "1 minute"
+npm install
 ```
 
-## 4. Create "DynamoDB table" called "status" with `id` index type `Number`
+## 2. Create lambda
+```
+npm run create-lambda
+```
 
-## 5. Configure `server/` -> See [christian-fei/lambda-status-server](https://github.com/christian-fei/lambda-status-server)
+## 3. Configure `event.json` according to your configuration.
+
+## 4. Create an interval to execute the status check.
+```
+npm run add-scheduled-event
+```
+
+## 5. Create "DynamoDB table" called "status" with `id` index type `Number`
+
+## 6. Configure `server/` -> See [christian-fei/lambda-status-server](https://github.com/christian-fei/lambda-status-server)

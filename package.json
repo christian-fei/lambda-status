@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create-lamdba": "claudia create --region eu-central-1 --handler lambda.handler",
+    "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"1 minute\""
   },
   "repository": {
     "type": "git",
