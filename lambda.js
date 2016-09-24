@@ -11,11 +11,7 @@ exports.handler = (event, context) => {
     time: true
   }
   console.log('-- requestParams', requestParams)
-  return request(requestParams, insertStatusResultFor(url, context))
-}
-
-function insertStatusResultFor(url, context) {
-  return (err, response) => {
+  return request(requestParams, (err, response) => {
     const status = {
       id: Date.now(),
       url: url,
@@ -23,8 +19,8 @@ function insertStatusResultFor(url, context) {
       loadingTime: response.elapsedTime
     }
     console.log('-- status', status)
-    return StatusRepository.insert(status)
+    StatusRepository.insert(status)
     .then(context.succeed)
     .catch(context.fail)
-  }
+  })
 }
