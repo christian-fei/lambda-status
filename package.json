@@ -1,0 +1,22 @@
+{
+  "name": "lambda-status",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christian-fei/lambda-status.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christian-fei/lambda-status/issues"
+  },
+  "homepage": "https://github.com/christian-fei/lambda-status#readme",
+  "dependencies": {
+    "claudia": "^1.9.0"
+  }
+}
