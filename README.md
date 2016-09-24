@@ -14,4 +14,4 @@ claudia add-scheduled-event --event event.json --name schedule-status --rate "1 
 
 ## 4. Create "DynamoDB table" called "status" with `id` index type `Number`
 
-## 5. Configure `server/` -> See server/README.md
+## 5. Configure `server/` -> See [christian-fei/lambda-status-server](https://github.com/christian-fei/lambda-status-server)
