@@ -25,4 +25,12 @@ npm run add-scheduled-event
 
 ## 5. Create "DynamoDB table" called "status" with `id` index type `Number`
 
+```
+aws dynamodb create-table --region eu-central-1 --table-name status \
+  --attribute-definitions AttributeName=id,AttributeType=N \
+  --key-schema AttributeName=id,KeyType=HASH \
+  --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+  --query TableDescription.TableArn --output text
+```
+
 ## 6. Configure `server/` -> See [christian-fei/lambda-status-server](https://github.com/christian-fei/lambda-status-server)
