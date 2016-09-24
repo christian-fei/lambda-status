@@ -1,10 +1,11 @@
 $.get('/statuses', function(err, status, response){
   console.log(err, status, response)
-  drawResponseTimeChartWith(response.responseJSON.data)
+  drawResponseTimeChartWith(response.responseJSON)
 })
 
 function drawResponseTimeChartWith(data) {
-  var context = document.getElementById("responseTimeChart").getContext('2d');
+  debugger
+  var context = document.getElementById(" loadingTimeChart").getContext('2d');
   var myLineChart = new Chart(context, {
     type: 'line',
     data: {
@@ -23,9 +24,11 @@ function drawResponseTimeChartWith(data) {
 
 
 function labelsFrom(data) {
+  data = data || []
   return data.map((a) => "")
 }
 
 function valuesFrom(data) {
-  return data.map((a) => a.responseTime)
+  data = data || []
+  return data.map((a) => a. loadingTime)
 }

@@ -1,6 +1,8 @@
 'use strict'
 
 const Hapi = require('hapi')
+const StatusRepository = require('../lib/StatusRepository')
+
 const server = new Hapi.Server()
 server.connection({
   host: 'localhost',
@@ -29,30 +31,15 @@ server.route({
   method: 'GET',
   path:'/statuses',
   handler: function (request, reply) {
-    return reply({
-      data: [{
-        statusCode: 200,
-        responseTime: 100,
-      },{
-        statusCode: 200,
-        responseTime: 67,
-      },{
-        statusCode: 200,
-        responseTime: 54,
-      },{
-        statusCode: 200,
-        responseTime: 97,
-      },{
-        statusCode: 200,
-        responseTime: 55,
-      },{
-        statusCode: 200,
-        responseTime: 130,
-      },{
-        statusCode: 200,
-        responseTime: 89,
-      },]
-    }).code(200);
+    return StatusRepository.latest()
+    .then((x) => {
+      console.log('-- then', x)
+      reply(x)
+    })
+    .catch((err) => {
+      console.log('-- catch', err.message)
+      reply({}).code(500)
+    })
   }
 })
 server.start((err) => {
