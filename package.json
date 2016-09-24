@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/christian-fei/lambda-status#readme",
   "dependencies": {
-    "claudia": "^1.9.0"
+    "claudia": "^1.9.0",
+    "request": "^2.75.0"
   }
 }

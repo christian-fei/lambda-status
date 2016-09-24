@@ -1,7 +1,0 @@
-{
-  "lambda": {
-    "role": "lambda-status-executor",
-    "name": "lambda-status",
-    "region": "eu-central-1"
-  }
-}
