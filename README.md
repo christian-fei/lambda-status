@@ -11,3 +11,7 @@ claudia create --region eu-central-1 --handler lambda.handler
 ```
 claudia add-scheduled-event --event event.json --name schedule-status --rate "1 minute"
 ```
+
+## 4. Create "DynamoDB table" called "status" with `id` index type `Number`
+
+## 5. Configure `server/` -> See server/README.md
