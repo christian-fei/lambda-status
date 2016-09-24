@@ -6,21 +6,27 @@ $.get('/statuses', function(err, status, response){
   setCounter('datasets',data)
   setCounter('from',data)
   setCounter('to',data)
+  setCounter('exception-rate',data)
   $loadingPageContainer.removeClass('loading-page-active')
 })
 
 function setCounter(type, data) {
   var counter = $('#'+type)
   if('datasets'==type) {
-    counter.append($('<div><h1># datasets: </h1><br><h1 class="giant">'+data.length+'</h1></div>'))
+    counter.append($('<div><h1># datasets</h1><br><h1 class="giant">'+data.length+'</h1></div>'))
   }
   if('from'==type) {
     const date = data.reduce((acc, val)=>acc<val.id?acc:new Date(val.id))
-    counter.append($('<div><h1>from : </h1><br><h2>'+ formatDate(date)+'</h2></div>'))
+    counter.append($('<div><h1>from</h1><br><h2>'+ formatDate(date)+'</h2></div>'))
   }
   if('to'==type) {
     const date = data.reduce((acc, val)=>acc>val.id?acc:new Date(val.id))
-    counter.append($('<div><h1>to : </h1><br><h2>'+ formatDate(date)+'</h2></div>'))
+    counter.append($('<div><h1>to</h1><br><h2>'+ formatDate(date)+'</h2></div>'))
+  }
+  if('exception-rate'==type) {
+    const exceptionCount = data.reduce((acc, val)=>val.statusCode>=400 ? acc+1 : acc, 0)
+    const exceptionRate = (exceptionCount/data.length).toFixed(5)
+    counter.append($('<div><h1>exception-rate</h1><br><h2>'+ exceptionRate+'%</h2></div>'))
   }
 }
 
