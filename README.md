@@ -9,7 +9,7 @@ npm install
 npm run create-lambda
 ```
 
-If you want to use a specific AWS profile, just do this
+If you want to use a specific AWS profile, just adds the profile at the end of each command, like this:
 
 ```
 npm run create-lambda -- --profile MY_PROFILE_NAME
@@ -34,3 +34,10 @@ aws dynamodb create-table --region eu-central-1 --table-name status \
 ```
 
 ## 6. Configure `server/` -> See [christian-fei/lambda-status-server](https://github.com/christian-fei/lambda-status-server)
+
+# Uninstall
+```
+npm run destroy-lambda
+```
+
+(optionally with `-- --profile MY_PROFILE_NAME` at the end)

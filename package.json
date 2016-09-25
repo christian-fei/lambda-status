@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-lambda": "claudia create --region eu-central-1 --handler lambda.handler --policies policies --configure-db",
-    "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"1 minute\""
+    "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"1 minute\"",
+    "destroy-lambda": "claudia destroy --region eu-central-1"
   },
   "repository": {
     "type": "git",
