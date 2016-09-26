@@ -1,5 +1,5 @@
 'use strict'
-const request = require('request')
+const request = require('request-promise')
 const StatusRepository = require('./lib/StatusRepository')
 const SECONDS = 1 * 1000
 
@@ -13,12 +13,8 @@ exports.handler = (event, context) => {
     timeout: 60*SECONDS
   }
   console.log('-- requestParams', requestParams)
-  return request(requestParams, (err, response) => {
-    if( err || !response ) {
-      console.log('-- err, response', err, response)
-      throw err
-    }
-    console.log('-- response defined', !!response)
+  return request(requestParams)
+  .then((response) => {
     const id = Date.now()
     const statusCode = response.statusCode
     const loadingTime = response.elapsedTime
@@ -27,5 +23,8 @@ exports.handler = (event, context) => {
     StatusRepository.insert(status)
     .then(context.succeed)
     .catch(context.fail)
+  })
+  .catch((err) => {
+    console.log('-- err, response', err, response)
   })
 }
