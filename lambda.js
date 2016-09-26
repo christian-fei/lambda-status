@@ -10,21 +10,22 @@ exports.handler = (event, context) => {
     method: event.method || 'get',
     headers: event.headers || {},
     time: true,
+    simple: false,
+    resolveWithFullResponse: true,
     timeout: 60*SECONDS
   }
-  console.log('-- requestParams', requestParams)
   return request(requestParams)
-  .then((response) => {
-    const id = Date.now()
-    const statusCode = response.statusCode
-    const loadingTime = response.elapsedTime
-    const status = {id,url,statusCode,loadingTime}
-    console.log('-- status', status)
-    StatusRepository.insert(status)
-    .then(context.succeed)
-    .catch(context.fail)
-  })
-  .catch((err) => {
-    console.log('-- err, response', err, response)
+  .then(responseToStatusFor(url))
+  .then(StatusRepository.insert)
+  .then(context.succeed)
+  .catch(context.fail)
+}
+
+function responseToStatusFor(url) {
+  return (response) => ({
+    id: Date.now(),
+    url: url,
+    statusCode: response.statusCode,
+    loadingTime: response.elapsedTime,
   })
 }
