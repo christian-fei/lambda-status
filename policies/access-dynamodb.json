@@ -3,9 +3,7 @@
   "Statement": [
     {
       "Action": [
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem"
+        "dynamodb:*"
       ],
       "Effect": "Allow",
       "Resource": "*"
