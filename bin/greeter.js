@@ -6,9 +6,7 @@ module.exports = {
 function execute() {
   return new Promise((resolve, reject) => {
     console.log('\
-###############################\
-# installer for lambda-status #\
-###############################\
+# installer for lambda-status\
 ')
     resolve('next')
   })
