@@ -3,6 +3,7 @@ const greeter = require('./greeter')
 const chooseTableName = require('./choose-table-name')
 const createTable = require('./create-table')
 const outro = require('./outro')
+const failure = require('./failure')
 
 module.exports = {
   start: start
@@ -13,8 +14,5 @@ function start() {
   .then(chooseTableName.execute)
   .then(createTable.execute)
   .then(outro.execute)
-  .catch((err) => {
-    console.log('==> The command failed with', err)
-    process.exit(1)
-  })
+  .catch(failure.execute)
 }
