@@ -5,6 +5,8 @@ module.exports = {
 }
 
 function execute(err) {
-  console.log('==> The command failed with', err)
+  console.log('==> The previous command failed.')
+  console.log('==> Here is the error:\n')
+  console.log(err)
   process.exit(1)
 }
