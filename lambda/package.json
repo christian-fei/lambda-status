@@ -1,0 +1,28 @@
+{
+  "name": "lambda-status-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create-lambda": "claudia create --region eu-central-1 --handler index.handler --policies ../policies --configure-db",
+    "update-lambda": "claudia update",
+    "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"1 minute\"",
+    "destroy-lambda": "claudia destroy --handler index.handler--region eu-central-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christian-fei/lambda-status.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christian-fei/lambda-status/issues"
+  },
+  "homepage": "https://github.com/christian-fei/lambda-status#readme",
+  "dependencies": {
+    "aws-sdk": "^2.6.4",
+    "claudia": "^1.9.0",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
+  }
+}

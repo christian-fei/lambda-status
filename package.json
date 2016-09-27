@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "create-lambda": "claudia create --region eu-central-1 --handler lambda.handler --policies policies --configure-db",
-    "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"1 minute\"",
-    "destroy-lambda": "claudia destroy --region eu-central-1"
+    "create-table": "aws dynamodb create-table --region eu-central-1 --table-name status --attribute-definitions AttributeName=id,AttributeType=N --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --query TableDescription.TableArn --output text"
   },
   "repository": {
     "type": "git",
@@ -20,9 +17,5 @@
   },
   "homepage": "https://github.com/christian-fei/lambda-status#readme",
   "dependencies": {
-    "aws-sdk": "^2.6.4",
-    "claudia": "^1.9.0",
-    "request": "^2.75.0",
-    "request-promise": "^4.1.1"
   }
 }

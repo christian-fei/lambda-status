@@ -1,0 +1,16 @@
+{
+  "name": "lamda-status-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create-api": "claudia create --region eu-central-1 --handler index.handler --policies ../policies --configure-db"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.6.4",
+    "claudia": "^1.9.0",
+    "claudia-api-builder": "^1.6.0"
+  }
+}
