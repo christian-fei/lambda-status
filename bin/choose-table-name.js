@@ -5,7 +5,7 @@ module.exports = {
   execute: execute
 }
 
-const tableNamePattern = /[a-zA-Z0-0-_]/
+const tableNamePattern = /^[a-zA-Z0-9-_]+$/
 
 function execute() {
   return new Promise((resolve, reject) => {
