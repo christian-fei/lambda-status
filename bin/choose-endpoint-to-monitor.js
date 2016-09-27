@@ -25,7 +25,7 @@ function execute() {
         stdinInterface.close()
         return resolve(url)
       }
-      console.log(`==> invalid url (pattern: ${urlPattern})`)
+      console.log(`==> invalid url (pattern: ${simplifiedUrlPattern})`)
     })
   })
 }
