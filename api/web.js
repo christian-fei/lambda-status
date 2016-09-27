@@ -7,9 +7,10 @@ const readFileSync = require('fs').readFileSync
 
 module.exports = api
 
+const indexHtml = readFileSync('./assets/index.html', 'utf8')
+
 api.get('/', function (request) {
-  // return'<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Document</title></head><body>test</body></html>'
-  return readFileSync('./assets/index.html', 'utf8')
+  return indexHtml
 }, {
   success: {contentType: 'text/html'},
   error: {code: 500}
