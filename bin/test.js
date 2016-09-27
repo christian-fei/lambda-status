@@ -4,6 +4,7 @@ const greeter = require('./greeter')
 const chooseTableName = require('./choose-table-name')
 const saveTableName = require('./save-table-name')
 const createTable = require('./create-table')
+const installDependencies = require('./install-dependencies')
 const outro = require('./outro')
 
 describe('installer', () => {
@@ -12,11 +13,13 @@ describe('installer', () => {
     const mockChooseTableName = sinon.mock(chooseTableName)
     const mockSaveTableName = sinon.mock(saveTableName)
     const mockCreateTable = sinon.mock(createTable)
+    const mockInstallDependencies = sinon.mock(installDependencies)
     const mockOutro = sinon.mock(outro)
     mockGreeter.expects('execute').returns(Promise.resolve())
     mockChooseTableName.expects('execute').returns(Promise.resolve('test-table'))
     mockSaveTableName.expects('execute').returns(Promise.resolve('test-table'))
     mockCreateTable.expects('execute').returns(Promise.resolve())
+    mockInstallDependencies.expects('execute').returns(Promise.resolve())
     mockOutro.expects('execute').returns(Promise.resolve())
 
     return installer.start()
@@ -25,6 +28,7 @@ describe('installer', () => {
     .then(verifyMock(mockChooseTableName))
     .then(verifyMock(mockSaveTableName))
     .then(verifyMock(mockCreateTable))
+    .then(verifyMock(mockInstallDependencies))
     .then(verifyMock(mockOutro))
   })
 
