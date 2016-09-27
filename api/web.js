@@ -3,11 +3,12 @@
 const ApiBuilder = require('claudia-api-builder')
 const api = new ApiBuilder()
 const StatusRepository = require('./lib/StatusRepository')
+const readFileSync = require('fs').readFileSync
 
 module.exports = api
 
 api.get('/', function (request) {
-  return 'Ok'
+  return readFileSync('./assets/index.html').toString()
 })
 
 api.get('/statuses', function (request) {

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,width=device-width">
+    <meta name="handheldfriendly" content="true">
+    <meta name="mobileoptimized" content="320">
+    <meta name="cleartype" content="on">
+    <meta charset="UTF-8">
+    <title>status</title>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css">
+    <style>
+      body {
+        font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue",  'Arial Narrow', Arial, sans-serif;
+        font-size: 16px;
+        padding-top: 1em;
+        padding-bottom: 1em;
+      }
+      a, .link {
+        cursor: pointer;
+        color: #333;
+        text-decoration: underline;
+      }
+      .loading-page-container {
+      }
+      .loading-page-container #loading-page {
+        display: none;
+      }
+      .loading-page-container.loading-page-active #loading-page {
+        background-color: #fff;
+        color: #333;
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9999;
+        padding: 0.25em;
+      }
+
+
+      .container {
+        display: block;
+        overflow: hidden;
+        margin: 0 auto;
+        max-width: 600px;
+      }
+      .item .label {
+        text-transform: uppercase;
+        font-size: 0.9em;
+      }
+      .item .value {
+        font-weight: bold;
+        margin: 0.05em auto;
+        font-size: 3em;
+      }
+
+      .tac {
+        text-align: center;
+      }
+
+      #history {
+        padding-left: 0;
+      }
+      #history li {
+        list-style-type: none;
+      }
+    </style>
+  </head>
+  <body class="loading-page-container loading-page-active">
+    <script>
+      if (/theme=dark/.test(window.location.search)) {
+        var element=document.createElement("link")
+        element.setAttribute("rel", "stylesheet")
+        element.setAttribute("type", "text/css")
+        element.setAttribute("href", '/assets/theme.dark.css')
+        document.getElementsByTagName("head")[0].appendChild(element)
+      }
+    </script>
+    <div id="loading-page">
+      <h1>Loading...</h1>
+    </div>
+    <div>
+      <div class="container">
+        <div class="cf">
+          <a class="pv2 pr3" href="/past/hour">Past hour</a>
+          <a class="pv2 pr3" href="/past/day">Past day</a>
+          <a class="pv2 pr3" href="/past/week">Past week</a>
+        </div>
+      </div>
+      <div class="container">
+        <div class="cf">
+          <div class="item fl w-100 w-50-m w-50-l pv4" id="from"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv4" id="to"></div>
+        </div>
+      </div>
+      <canvas id="loading-time-chart" width="300" height="30"></canvas>
+      <div class="container">
+        <div class="cf">
+          <div class="item w-100 pv2" id="last-response"></div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="cf">
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="datasets"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="avg-loading-time"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="max-loading-time"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="min-loading-time"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="exception-rate"></div>
+          <div class="item fl w-100 w-50-m w-50-l pv1" id="count-by-status-code"></div>
+        </div>
+      </div>
+      <div class="container">
+        <h3 class="ttu">history</h3>
+        <ul id="history"></ul>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.1/lodash.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script>
+      var $loadingPageContainer = $('.loading-page-container')
+      var currentChart = null
+      var currentData = null
+
+      var dataFrom = '1hago'
+      var path = window.location.pathname
+      if('/past/hour'==path){dataFrom = '1hago'}
+      if('/past/day'==path){dataFrom = '1dago'}
+      if('/past/week'==path){dataFrom = '1wago'}
+
+      requestDataFrom(dataFrom)
+
+      setTimeout(() => {
+        window.location = window.location
+      }, 1000*60)
+
+      function requestDataFrom(from) {
+        $.get('/statuses?from='+from, function(err, status, response){
+          currentData = response.responseJSON.sort((a,b)=>a.id-b.id)
+          if('1hago'==dataFrom) {
+            drawResponseTimeChartWith(currentData)
+          }
+          render('last-response', currentData)
+          render('datasets', currentData)
+          render('from', currentData)
+          render('to', currentData)
+          render('exception-rate', currentData)
+          render('avg-loading-time', currentData)
+          render('max-loading-time', currentData)
+          render('min-loading-time', currentData)
+          render('count-by-status-code', currentData)
+          render('history', currentData)
+          $loadingPageContainer.removeClass('loading-page-active')
+        })
+      }
+
+      function render(type, data) {
+        var counter = $('#'+type)
+        if('last-response'==type) {
+          counter.empty()
+          var lastResponse = data[data.length-1]
+          counter.append($('<p>Last status: '+renderStatusFrom(lastResponse)+'</p>'))
+        }
+        if('datasets'==type) {
+          counter.empty()
+          counter.append(counterFrom('# datasets', data.length))
+        }
+        if('from'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var date = data.reduce((acc, val)=>acc<val.id?acc:new Date(val.id), new Date(data[0].id))
+            counter.empty()
+            counter.append('From: <span class="light">' + formatDate(date) +'</span>')
+          }
+        }
+        if('to'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var date = data.reduce((acc, val)=>acc>val.id?acc:new Date(val.id), null)
+            counter.empty()
+            counter.append('To: <span class="light">' + formatDate(date) +'</span>')
+          }
+        }
+        if('exception-rate'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var exceptionCount = data.reduce((acc, val)=>val.statusCode>=400 ? acc+1 : acc, 0)
+            var exceptionRate = (exceptionCount/data.length).toFixed(5)
+            counter.empty()
+            counter.append(counterFrom('exception-rate', exceptionRate+'%'))
+          }
+        }
+        if('avg-loading-time'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var avg = _.meanBy(data, 'loadingTime')
+            avg = parseInt(avg, 10)
+            counter.empty()
+            counter.append(counterFrom('avg loading time', avg+'ms'))
+          }
+        }
+        if('max-loading-time'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var max = _.maxBy(data, 'loadingTime').loadingTime
+            max = parseInt(max, 10)
+            counter.empty()
+            counter.append(counterFrom('max loading time', max+'ms'))
+          }
+        }
+        if('min-loading-time'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var min = _.minBy(data, 'loadingTime').loadingTime
+            min = parseInt(min, 10)
+            counter.empty()
+            counter.append(counterFrom('min loading time', min+'ms'))
+          }
+        }
+        if('count-by-status-code'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            var countByStatusCode = _.countBy(data,'statusCode')
+            var output = ""
+            for(var key in countByStatusCode) {
+              var value = countByStatusCode[key]
+              output+='<strong>'+key+'</strong>:  '+value+'</br>'
+            }
+            counter.empty()
+            counter.append(counterFrom('Count by `statusCode`', output))
+          }
+        }
+        if('history'==type) {
+          if(data.length===0){
+            counter.hide()
+          } else {
+            counter.show()
+            output = _.map(data, (d) => {
+              return '<li class="pv2">'+ renderStatusWithTimestampFrom(d) +'</li>'
+            }).join('')
+            counter.empty()
+            counter.append(output)
+          }
+        }
+      }
+
+      function renderStatusFrom(data) {
+        var className = data.statusCode<400 ? 'green' : 'red'
+        return '<span class="'+className+'">'+data.statusCode+' ('+data.loadingTime+')</span>'
+      }
+      function renderStatusWithTimestampFrom(data) {
+        var className = data.statusCode<400 ? 'green' : 'red'
+        return new Date(data.id).toUTCString() + '&nbsp;&nbsp; ' + renderStatusFrom(data)
+      }
+
+      function counterFrom(label, value) {
+        return $('<div><p class="label">'+label+'</p><p class="value">'+value+'</p></div>')
+      }
+
+      function drawResponseTimeChartWith(data) {
+        Chart.defaults.global.legend.display = false
+        $("#loading-time-chart").empty()
+        if(currentChart) {
+          debugger
+          currentChart.destroy()
+        }
+        var context = document.getElementById("loading-time-chart").getContext('2d');
+        currentChart = new Chart(context, {
+          type: 'line',
+          data: {
+            labels: labelsFrom(data),
+            datasets: [{
+              label: "Response time (ms)",
+              labelColor: /theme=dark/.test(window.location.search) ? "rgba(255,255,255,0.66)" : "rgba(33,33,33,0.66)",
+              fill: false,
+              steppedLine: /steppedLine=true/.test(window.location.search),
+              lineTension: 0,
+              borderColor: /theme=dark/.test(window.location.search) ? "rgba(255,255,255,0.66)" : "rgba(33,33,33,0.66)",
+              borderWidth: 3,
+              pointBorderWidth: 0,
+              pointRadius: 1,
+              pointHoverRadius: 3,
+              pointHitRadius: 3,
+              data: valuesFrom(data),
+            }]
+          }
+        });
+      }
+
+
+      function labelsFrom(data) {
+        data = data || []
+        return data.map((a, index) => {
+          if(index % parseInt((data.length)*0.33, 0)==0 || index == data.length-1){
+            return formatTime(new Date(a.id))
+          }
+          return ""
+        })
+      }
+
+      function valuesFrom(data) {
+        data = data || []
+        return data.map(a => a.loadingTime)
+      }
+
+      function formatTime(date){
+          return ''
+        if(!date) {
+        }
+        return date.toTimeString().substring(0,8)
+      }
+
+      function formatDate(date) {
+        if(!date) {
+          return ''
+        }
+        return date.toUTCString()
+        var isoString = date.toISOString()
+        return isoString.substring(0,"2016-09-24".length)+ ' ' + isoString.substring("2016-09-24T".length, "2016-09-24T".length+8)
+      }
+    </script>
+  </body>
+</html>
