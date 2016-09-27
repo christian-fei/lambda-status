@@ -1,10 +1,10 @@
 {
-  "name": "lamdba-status-api",
+  "name": "lambda-status-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-api": "claudia create --region eu-central-1 --name lamdba-status-api --api-module web --policies ../policies --configure-db"
+    "create-api": "claudia create --region eu-central-1 --name lambda-status-api --api-module web --policies ../policies --configure-db"
   },
   "author": "",
   "license": "ISC",
