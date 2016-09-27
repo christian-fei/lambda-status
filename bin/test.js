@@ -10,6 +10,7 @@ const chooseMonitorInterval = require('./choose-monitor-interval')
 const installDependencies = require('./install-dependencies')
 const createMonitorLambda = require('./create-monitor-lambda')
 const createScheduledEvent = require('./create-scheduled-event')
+const createApi = require('./create-api')
 const outro = require('./outro')
 
 describe('installer', () => {
@@ -24,6 +25,7 @@ describe('installer', () => {
     const mockInstallDependencies = sinon.mock(installDependencies)
     const mockCreateMonitorLambda = sinon.mock(createMonitorLambda)
     const mockCreateScheduledEvent = sinon.mock(createScheduledEvent)
+    const mockCreateApi = sinon.mock(createApi)
     const mockOutro = sinon.mock(outro)
     mockGreeter.expects('execute').returns(Promise.resolve())
     mockChooseTableName.expects('execute').returns(Promise.resolve('test-table'))
@@ -35,6 +37,7 @@ describe('installer', () => {
     mockInstallDependencies.expects('execute').returns(Promise.resolve())
     mockCreateMonitorLambda.expects('execute').returns(Promise.resolve())
     mockCreateScheduledEvent.expects('execute').returns(Promise.resolve())
+    mockCreateApi.expects('execute').returns(Promise.resolve())
     mockOutro.expects('execute').returns(Promise.resolve())
 
     return installer.start()
@@ -49,6 +52,7 @@ describe('installer', () => {
     .then(verifyMock(mockInstallDependencies))
     .then(verifyMock(mockCreateMonitorLambda))
     .then(verifyMock(mockCreateScheduledEvent))
+    .then(verifyMock(mockCreateApi))
     .then(verifyMock(mockOutro))
   })
 

@@ -10,6 +10,7 @@ const installDependencies = require('./install-dependencies')
 const createMonitorLambda = require('./create-monitor-lambda')
 const chooseMonitorInterval = require('./choose-monitor-interval')
 const chooseScheduledEvent = require('./create-scheduled-event')
+const createApi = require('./create-api')
 const outro = require('./outro')
 const failure = require('./failure')
 
@@ -32,6 +33,7 @@ function start() {
   .then(installDependencies.execute)
   .then(createMonitorLambda.execute)
   .then(chooseScheduledEvent.execute)
+  .then(createApi.execute)
   .then(outro.execute)
   .catch(failure.execute)
 }
