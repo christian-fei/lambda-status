@@ -8,11 +8,14 @@ const readFileSync = require('fs').readFileSync
 module.exports = api
 
 api.get('/', function (request) {
-  return readFileSync('./assets/index.html').toString()
+  // return'<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Document</title></head><body>test</body></html>'
+  return readFileSync('./assets/index.html', 'utf8')
+}, {
+  success: {contentType: 'text/html'},
+  error: {code: 500}
 })
 
 api.get('/statuses', function (request) {
-  console.log('-- request', request)
   const from = parseFrom(request.queryString.from)
   return StatusRepository.latest(from)
 })
