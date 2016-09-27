@@ -7,6 +7,7 @@ const createTable = require('./create-table')
 const chooseEndpointToMonitor = require('./choose-endpoint-to-monitor')
 const saveEndpointToMonitor = require('./save-endpoint-to-monitor')
 const installDependencies = require('./install-dependencies')
+const createMonitorLambda = require('./create-monitor-lambda')
 const outro = require('./outro')
 
 describe('installer', () => {
@@ -18,6 +19,7 @@ describe('installer', () => {
     const mockChooseEndpointToMonitor = sinon.mock(chooseEndpointToMonitor)
     const mockSaveEndpointToMonitor = sinon.mock(saveEndpointToMonitor)
     const mockInstallDependencies = sinon.mock(installDependencies)
+    const mockCreateMonitorLambda = sinon.mock(createMonitorLambda)
     const mockOutro = sinon.mock(outro)
     mockGreeter.expects('execute').returns(Promise.resolve())
     mockChooseTableName.expects('execute').returns(Promise.resolve('test-table'))
@@ -26,6 +28,7 @@ describe('installer', () => {
     mockChooseEndpointToMonitor.expects('execute').returns(Promise.resolve('https://example.org'))
     mockSaveEndpointToMonitor.expects('execute').returns(Promise.resolve())
     mockInstallDependencies.expects('execute').returns(Promise.resolve())
+    mockCreateMonitorLambda.expects('execute').returns(Promise.resolve())
     mockOutro.expects('execute').returns(Promise.resolve())
 
     return installer.start()
@@ -37,6 +40,7 @@ describe('installer', () => {
     .then(verifyMock(mockChooseEndpointToMonitor))
     .then(verifyMock(mockSaveEndpointToMonitor))
     .then(verifyMock(mockInstallDependencies))
+    .then(verifyMock(mockCreateMonitorLambda))
     .then(verifyMock(mockOutro))
   })
 

@@ -6,6 +6,7 @@ const saveTableName = require('./save-table-name')
 const chooseEndpointToMonitor = require('./choose-endpoint-to-monitor')
 const saveEndpointToMonitor = require('./save-endpoint-to-monitor')
 const installDependencies = require('./install-dependencies')
+const createMonitorLambda = require('./create-monitor-lambda')
 const outro = require('./outro')
 const failure = require('./failure')
 
@@ -21,6 +22,7 @@ function start() {
   .then(chooseEndpointToMonitor.execute)
   .then(saveEndpointToMonitor.execute)
   .then(installDependencies.execute)
+  .then(createMonitorLambda.execute)
   .then(outro.execute)
   .catch(failure.execute)
 }
