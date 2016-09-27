@@ -2,6 +2,7 @@
 const installer = require('./installer')
 const greeter = require('./greeter')
 const checkAwsConfiguration = require('./check-aws-configuration')
+const chooseProjectName = require('./choose-project-name')
 const chooseTableName = require('./choose-table-name')
 const saveTableName = require('./save-table-name')
 const createTable = require('./create-table')
@@ -17,6 +18,7 @@ const outro = require('./outro')
 describe('installer', () => {
   it('interacts correctly', () => {
     const mockGreeter = sinon.mock(greeter)
+    const mockChooseProjectName = sinon.mock(chooseProjectName)
     const mockCheckAwsConfiguration = sinon.mock(checkAwsConfiguration)
     const mockChooseTableName = sinon.mock(chooseTableName)
     const mockSaveTableName = sinon.mock(saveTableName)
@@ -30,6 +32,7 @@ describe('installer', () => {
     const mockCreateApi = sinon.mock(createApi)
     const mockOutro = sinon.mock(outro)
     mockGreeter.expects('execute').returns(Promise.resolve())
+    mockChooseProjectName.expects('execute').returns(Promise.resolve('example-org-status'))
     mockCheckAwsConfiguration.expects('execute').returns(Promise.resolve())
     mockChooseTableName.expects('execute').returns(Promise.resolve('test-table'))
     mockSaveTableName.expects('execute').returns(Promise.resolve('test-table'))
@@ -46,6 +49,7 @@ describe('installer', () => {
     return installer.start()
 
     .then(verifyMock(mockGreeter))
+    .then(verifyMock(mockChooseProjectName))
     .then(verifyMock(mockCheckAwsConfiguration))
     .then(verifyMock(mockChooseTableName))
     .then(verifyMock(mockSaveTableName))
