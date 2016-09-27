@@ -17,6 +17,7 @@ describe('installer', () => {
     mockOutro.expects('execute').returns(Promise.resolve('test-status'))
 
     return installer.start()
+
     .then(verifyMock(mockGreeter))
     .then(verifyMock(mockChooseTableName))
     .then(verifyMock(mockCreateTable))
