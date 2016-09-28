@@ -1,6 +1,7 @@
 'use strict'
 const greeter = require('./greeter')
 const chooseProjectName = require('./choose-project-name')
+const saveProjectName = require('./save-project-name')
 const checkAwsConfiguration = require('./check-aws-configuration')
 const chooseTableName = require('./choose-table-name')
 const createTable = require('./create-table')
@@ -24,6 +25,7 @@ let interval
 function start() {
   return greeter.execute()
   .then(chooseProjectName.execute)
+  .then(saveProjectName.execute)
   .then(checkAwsConfiguration.execute)
   .then(chooseTableName.execute)
   .then(saveTableName.execute)
