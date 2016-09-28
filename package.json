@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-table": "aws dynamodb create-table --region eu-central-1 --table-name status --attribute-definitions AttributeName=id,AttributeType=N --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --query TableDescription.TableArn --output text"
+    "create-table": "aws dynamodb create-table --region eu-central-1 --table-name status --attribute-definitions AttributeName=id,AttributeType=N --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --query TableDescription.TableArn --output text",
+    "test:bin": "mocha test/bin.js --require test/test-helper.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,11 @@
   },
   "homepage": "https://github.com/christian-fei/lambda-status#readme",
   "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "mocha": "^3.1.0",
+    "sinon": "^1.17.6"
   }
 }

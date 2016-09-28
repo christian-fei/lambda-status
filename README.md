@@ -3,6 +3,7 @@
 - node 6+ (tested) & npm 3 (tested)
 - aws cli (configured correctly)
 
+
 # Installation wizard
 
 Follow these steps and you should be good to go:
@@ -18,7 +19,6 @@ cd my-status
 ## UAT
 
 ```
-cd bin
 npm i
-npm t
+npm run test:bin
 ```
