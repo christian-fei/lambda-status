@@ -20,8 +20,6 @@ module.exports = {
   start: start
 }
 
-let interval
-
 function start() {
   return greeter.execute()
   .then(chooseProjectName.execute)
