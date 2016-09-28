@@ -8,7 +8,7 @@ module.exports = {
 
 
 function execute(interval) {
-  const command = `(cd lambda; AWS_SCHEDULED_EVENT_RATE="${interval}" npm run add-scheduled-event)`
+  const command = `(cd monitor; AWS_SCHEDULED_EVENT_RATE="${interval}" npm run add-scheduled-event)`
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {

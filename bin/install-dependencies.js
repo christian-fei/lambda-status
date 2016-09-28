@@ -8,7 +8,7 @@ module.exports = {
 
 
 function execute(tableName) {
-  const command = `(cd lambda; npm i); (cd api; npm i)`
+  const command = `(cd monitor; npm i); (cd api; npm i)`
   return new Promise((resolve, reject) => {
     console.log('==> Installing dependencies, this can take a while...')
     exec(command, (error, stdout, stderr) => {

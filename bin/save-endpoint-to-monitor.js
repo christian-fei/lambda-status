@@ -8,7 +8,7 @@ module.exports = {
 
 
 function execute(endpoint) {
-  const command = `sed -i "" -e 's/${escapeRegExp("https://example.org")}/${escapeRegExp(endpoint)}/g' ./lambda/event.json`
+  const command = `sed -i "" -e 's/${escapeRegExp("https://example.org")}/${escapeRegExp(endpoint)}/g' ./monitor/event.json`
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {

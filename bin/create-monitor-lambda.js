@@ -8,7 +8,7 @@ module.exports = {
 
 
 function execute(tableName) {
-  const command = `(cd lambda; npm run create-lambda)`
+  const command = `(cd monitor; npm run create-monitor)`
   return new Promise((resolve, reject) => {
     console.log('==> Creating monitoring lambda function, this can take a while...')
     exec(command, (error, stdout, stderr) => {

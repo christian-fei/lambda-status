@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-lambda": "claudia create --region eu-central-1 --handler index.handler --policies ../policies --configure-db",
-    "update-lambda": "claudia update",
+    "create-monitor": "claudia create --region eu-central-1 --handler index.handler --policies ../policies --configure-db",
+    "update-monitor": "claudia update",
     "add-scheduled-event": "claudia add-scheduled-event --event event.json --name schedule-status --rate \"$AWS_SCHEDULED_EVENT_RATE\"",
-    "destroy-lambda": "claudia destroy --handler index.handler--region eu-central-1"
+    "destroy-monitor": "claudia destroy --handler index.handler--region eu-central-1"
   },
   "repository": {
     "type": "git",
