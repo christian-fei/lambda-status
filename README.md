@@ -12,3 +12,13 @@ git clone git@github.com:christian-fei/lambda-status.git my-status
 cd my-status
 ./bin/install
 ```
+
+
+# Test
+## UAT
+
+```
+cd bin
+npm i
+npm t
+```
