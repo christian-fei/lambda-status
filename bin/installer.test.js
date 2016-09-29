@@ -18,36 +18,21 @@ const outro = require('./outro')
 
 describe('installer', () => {
   it('interacts correctly', () => {
-    const mockGreeter = sinon.mock(greeter)
-    const mockChooseProjectName = sinon.mock(chooseProjectName)
-    const mockSaveProjectName = sinon.mock(saveProjectName)
-    const mockCheckAwsConfiguration = sinon.mock(checkAwsConfiguration)
-    const mockChooseTableName = sinon.mock(chooseTableName)
-    const mockSaveTableName = sinon.mock(saveTableName)
-    const mockCreateTable = sinon.mock(createTable)
-    const mockChooseEndpointToMonitor = sinon.mock(chooseEndpointToMonitor)
-    const mockSaveEndpointToMonitor = sinon.mock(saveEndpointToMonitor)
-    const mockChooseMonitorInterval = sinon.mock(chooseMonitorInterval)
-    const mockInstallDependencies = sinon.mock(installDependencies)
-    const mockCreateMonitorLambda = sinon.mock(createMonitorLambda)
-    const mockCreateScheduledEvent = sinon.mock(createScheduledEvent)
-    const mockCreateApi = sinon.mock(createApi)
-    const mockOutro = sinon.mock(outro)
-    mockGreeter.expects('execute').returns(Promise.resolve())
-    mockChooseProjectName.expects('execute').returns(Promise.resolve('example-org-status'))
-    mockSaveProjectName.expects('execute').returns(Promise.resolve())
-    mockCheckAwsConfiguration.expects('execute').returns(Promise.resolve())
-    mockChooseTableName.expects('execute').returns(Promise.resolve('test-table'))
-    mockSaveTableName.expects('execute').returns(Promise.resolve('test-table'))
-    mockCreateTable.expects('execute').withArgs('test-table').returns(Promise.resolve())
-    mockChooseEndpointToMonitor.expects('execute').returns(Promise.resolve('https://example.org'))
-    mockSaveEndpointToMonitor.expects('execute').withArgs('https://example.org').returns(Promise.resolve())
-    mockChooseMonitorInterval.expects('execute').returns(Promise.resolve())
-    mockInstallDependencies.expects('execute').returns(Promise.resolve())
-    mockCreateMonitorLambda.expects('execute').returns(Promise.resolve())
-    mockCreateScheduledEvent.expects('execute').returns(Promise.resolve())
-    mockCreateApi.expects('execute').returns(Promise.resolve())
-    mockOutro.expects('execute').returns(Promise.resolve())
+    const mockGreeter = mockAction(greeter)
+    const mockChooseProjectName = mockAction(chooseProjectName, 'example-org-status')
+    const mockSaveProjectName = mockAction(saveProjectName)
+    const mockCheckAwsConfiguration = mockAction(checkAwsConfiguration)
+    const mockChooseTableName = mockAction(chooseTableName, 'test-table')
+    const mockSaveTableName = mockAction(saveTableName, 'test-table')
+    const mockCreateTable = mockActionWithArgs(createTable, 'test-table')
+    const mockChooseEndpointToMonitor = mockAction(chooseEndpointToMonitor, 'https://example.org')
+    const mockSaveEndpointToMonitor = mockActionWithArgs(saveEndpointToMonitor, 'https://example.org')
+    const mockChooseMonitorInterval = mockAction(chooseMonitorInterval)
+    const mockInstallDependencies = mockAction(installDependencies)
+    const mockCreateMonitorLambda = mockAction(createMonitorLambda)
+    const mockCreateScheduledEvent = mockAction(createScheduledEvent)
+    const mockCreateApi = mockAction(createApi)
+    const mockOutro = mockAction(outro)
 
     return installer.start()
 
@@ -73,5 +58,13 @@ describe('installer', () => {
       mock.verify()
       return value
     }
+  }
+
+  function mockAction(action, returnValue) {
+    return sinon.mock(action).expects('execute').returns(Promise.resolve(returnValue))
+  }
+
+  function mockActionWithArgs(action, args, returnValue) {
+    return sinon.mock(action).expects('execute').withArgs(args).returns(Promise.resolve(returnValue))
   }
 })
