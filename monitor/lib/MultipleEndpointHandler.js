@@ -11,12 +11,12 @@ function canHandle(event) {
 
 function handler(event, context, requestService, statusRepository, lambdaService) {
   const singleEndpointEvent = getSingleEndpointEventFrom(event)
+  const nextEvent = getNextMultipleEndpointEventFrom(event)
   if(event.endpoints.length>1) {
-    const nextEvent = getNextMultipleEndpointEventFrom(event)
     return lambdaService.invoke(nextEvent, context)
-    .then(() => RequestHandler.handler(singleEndpointEvent, context, requestService, statusRepository))
+    .then(() => {return singleEndpointEvent})
   }
-  return RequestHandler.handler(singleEndpointEvent, context, requestService, statusRepository)
+  return Promise.resolve(singleEndpointEvent)
 }
 
 function getSingleEndpointEventFrom(event) {

@@ -12,6 +12,9 @@ exports.handler = (event, context, requestService, statusRepository, lambdaServi
 
   if(MultipleEndpointHandler.canHandle(event)) {
     return MultipleEndpointHandler.handler(event, context, requestService, statusRepository, lambdaService)
+    .then((requestEvent) => {
+      return RequestHandler.handler(requestEvent, context, requestService, statusRepository)
+    })
   }
   return RequestHandler.handler(event, context, requestService, statusRepository)
 }

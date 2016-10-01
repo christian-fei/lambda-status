@@ -10,12 +10,12 @@ describe('monitor', function () {
     it('delegates to RequestHandler', function () {
       const context = {done: () => Promise.resolve(), succeed: () => Promise.resolve(), fail: () => Promise.reject()}
 
-      const mockHandler = sinon.mock(RequestHandler)
-      mockHandler.expects('handler').returns(Promise.resolve())
+      const mockRequestHandler = sinon.mock(RequestHandler)
+      mockRequestHandler.expects('handler').returns(Promise.resolve())
 
       monitor.handler(event, context)
 
-      mockHandler.verify()
+      mockRequestHandler.verify()
     })
   })
 
@@ -23,12 +23,16 @@ describe('monitor', function () {
     it('delegates to MultipleEndpointHandler', function () {
       const context = {done: () => Promise.resolve(), succeed: () => Promise.resolve(), fail: () => Promise.reject()}
 
-      const mockHandler = sinon.mock(MultipleEndpointHandler)
-      mockHandler.expects('handler').returns(Promise.resolve())
+      const mockMultipleEndpointHandler = sinon.mock(MultipleEndpointHandler)
+      mockMultipleEndpointHandler.expects('handler').returns(Promise.resolve({url: "https://example.org/other"}))
+      const mockRequestHandler = sinon.mock(RequestHandler)
+      mockRequestHandler.expects('handler').returns(Promise.resolve())
 
-      monitor.handler(eventMultipleEndpoints, context)
-
-      mockHandler.verify()
+      return monitor.handler(eventMultipleEndpoints, context)
+      .then(() => {
+        mockMultipleEndpointHandler.verify()
+        mockRequestHandler.verify()
+      })
     })
   })
 })
