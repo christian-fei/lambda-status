@@ -1,22 +1,26 @@
 'use strict'
 
-module.exports = {
-  insert
-}
-
 const AWS = require('aws-sdk')
 AWS.config.region = 'eu-central-1'
-const client = new AWS.DynamoDB.DocumentClient()
-const table = 'status'
 
-function insert(item) {
-  const params = {
-    TableName: table,
-    Item: item
+module.exports = class StatusRepository {
+  constructor(table) {
+    this.client = new AWS.DynamoDB.DocumentClient()
+    this.table = table || 'status'
   }
-  return new Promise((resolve, reject) => {
-    client.put(params, function(err, data) {
-      err ? reject(err) : resolve(data)
+
+  insert(item) {
+    const client = this.client
+    const table = this.table
+
+    const params = {
+      TableName: table,
+      Item: item
+    }
+    return new Promise((resolve, reject) => {
+      client.put(params, function(err, data) {
+        err ? reject(err) : resolve(data)
+      })
     })
-  })
+  }
 }

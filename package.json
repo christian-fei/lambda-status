@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "create-table": "aws dynamodb create-table --region eu-central-1 --table-name status --attribute-definitions AttributeName=id,AttributeType=N --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --query TableDescription.TableArn --output text",
-    "test:bin": "mocha bin/*.test.js --require test/test-helper.js"
+    "test:bin": "mocha bin/*.test.js --require test/test-helper.js",
+    "test:monitor": "mocha monitor/lib/*.test.js --require test/test-helper.js"
   },
   "repository": {
     "type": "git",
