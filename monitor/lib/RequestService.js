@@ -4,6 +4,6 @@ const requestPromise = require('request-promise')
 
 module.exports = class RequestService {
   request(params) {
-    return requestPromise(requestParams)
+    return requestPromise(params)
   }
 }
