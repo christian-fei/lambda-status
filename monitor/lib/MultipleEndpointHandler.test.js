@@ -1,7 +1,7 @@
 'use strict'
 
 const MultipleEndpointHandler = require('./MultipleEndpointHandler')
-const SingleEndpointHandler = require('./SingleEndpointHandler')
+const RequestHandler = require('./RequestHandler')
 const LambdaService = require('./LambdaService')
 
 
@@ -16,15 +16,17 @@ const testEvent = {
 const testContext = {done:() => Promise.resolve(), succeed:() => Promise.resolve(), fail:() => Promise.resolve()}
 
 describe('MultipleEndpointHandler', () => {
-  it('invokes lambda', () => {
+  it('invokes lambda and ', () => {
+    const mockRequestHandler = sinon.mock(RequestHandler)
     const lambdaService = sinon.mock(new LambdaService())
-    const mockSingleEndpointHandler = sinon.mock(SingleEndpointHandler)
     const nextEvent = { base: "https://example.org", endpoints: ["/"] }
+    mockRequestHandler.expects('handler').returns(Promise.resolve())
     lambdaService.expects('invoke').withArgs(nextEvent, testContext).returns(Promise.resolve())
-    mockSingleEndpointHandler.expects('handler').returns(Promise.resolve())
 
     return MultipleEndpointHandler.handler(testEvent, testContext, testRequestService, testStatusRepository, lambdaService.object)
-    .then(() => lambdaService.verify())
-    .then(() => mockSingleEndpointHandler.verify())
+    .then(() => {
+      mockRequestHandler.verify()
+      lambdaService.verify()
+    })
   })
 })

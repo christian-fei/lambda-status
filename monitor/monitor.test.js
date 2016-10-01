@@ -1,5 +1,5 @@
 const monitor = require('./monitor')
-const SingleEndpointHandler = require('./lib/SingleEndpointHandler')
+const RequestHandler = require('./lib/RequestHandler')
 const MultipleEndpointHandler = require('./lib/MultipleEndpointHandler')
 
 const event = require('./event.json')
@@ -7,10 +7,10 @@ const eventMultipleEndpoints = require('./event.multiple-endpoints.json')
 
 describe('monitor', function () {
   describe('event to monitor single endpoint', function () {
-    it('delegates to SingleEndpointHandler', function () {
+    it('delegates to RequestHandler', function () {
       const context = {done: () => Promise.resolve(), succeed: () => Promise.resolve(), fail: () => Promise.reject()}
 
-      const mockHandler = sinon.mock(SingleEndpointHandler)
+      const mockHandler = sinon.mock(RequestHandler)
       mockHandler.expects('handler').returns(Promise.resolve())
 
       monitor.handler(event, context)

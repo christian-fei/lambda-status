@@ -1,6 +1,6 @@
 'use strict'
 
-const SingleEndpointHandler = require('./SingleEndpointHandler')
+const RequestHandler = require('./RequestHandler')
 
 exports.handler = handler
 exports.canHandle = canHandle
@@ -14,9 +14,9 @@ function handler(event, context, requestService, statusRepository, lambdaService
   if(event.endpoints.length>1) {
     const nextEvent = getNextMultipleEndpointEventFrom(event)
     return lambdaService.invoke(nextEvent, context)
-    .then(() => SingleEndpointHandler.handler(singleEndpointEvent, context, requestService, statusRepository))
+    .then(() => RequestHandler.handler(singleEndpointEvent, context, requestService, statusRepository))
   }
-  return SingleEndpointHandler.handler(singleEndpointEvent, context, requestService, statusRepository)
+  return RequestHandler.handler(singleEndpointEvent, context, requestService, statusRepository)
 }
 
 function getSingleEndpointEventFrom(event) {
